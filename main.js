@@ -100,30 +100,33 @@ function runBasicCards(){
 		}
 		if (basicCardIdx > JSON.parse(data).length - 1) {
 			runClozeCards();
+			return;
 		}
 		else{
 			console.log("\nQuestion: "+ parseInt(basicCardIdx+1)+".  "+JSON.parse(data)[basicCardIdx].front);
-		}
-	});
-	//Asks the user if they want to see the answer to the question
-	inquirer.prompt([
-		{
-			type: "confirm",
-			name: "showAnswer",
-			message: "Show answer?"
-		}
-	])
-	//shows answer to user if they say yes by reading from the json file
-	.then(function(answer){
-		if (answer.showAnswer){
-			fs.readFile("basicLog.json","utf8",function(error,data){
-				if (error){
-					return console.log(error);
+		
+	
+			//Asks the user if they want to see the answer to the question
+			inquirer.prompt([
+				{
+					type: "confirm",
+					name: "showAnswer",
+					message: "Show answer?"
 				}
-				console.log("\nAnswer: "+ parseInt(basicCardIdx+1)+".  "+JSON.parse(data)[basicCardIdx].back);
-				basicCardIdx++;
-				runBasicCards();
-			})
+			])
+			//shows answer to user if they say yes by reading from the json file
+			.then(function(answer){
+				if (answer.showAnswer){
+					fs.readFile("basicLog.json","utf8",function(error,data){
+						if (error){
+							return console.log(error);
+						}
+						console.log("\nAnswer: "+ parseInt(basicCardIdx+1)+".  "+JSON.parse(data)[basicCardIdx].back);
+						basicCardIdx++;
+						runBasicCards();
+					})
+				}
+			});
 		}
 	});
 }
@@ -141,26 +144,28 @@ function runClozeCards(){
 
 		else {
 			console.log("\nQuestion: "+ parseInt(clozeCardIdx+1)+".  ..."+JSON.parse(data)[clozeCardIdx].partial);
-		}
-	})
-	//Asks the user if they want to see the answer to the question
-	inquirer.prompt([
-		{
-			type: "confirm",
-			name: "showClozeAnswer",
-			message: "Show full answer?"
-		}
-	])
-	//shows answer to user if they say yes by reading from the json file
-	.then(function(answer){
-		if (answer.showClozeAnswer){
-			fs.readFile("clozeLog.json","utf8",function(error,data){
-				if (error){
-					return console.log(error);
+		
+	
+			//Asks the user if they want to see the answer to the question
+			inquirer.prompt([
+				{
+					type: "confirm",
+					name: "showClozeAnswer",
+					message: "Show full answer?"
 				}
-				console.log("\nAnswer: "+ parseInt(clozeCardIdx+1)+".  "+JSON.parse(data)[clozeCardIdx].fullText);
-				clozeCardIdx++;
-				runClozeCards();
+			])
+			//shows answer to user if they say yes by reading from the json file
+			.then(function(answer){
+				if (answer.showClozeAnswer){
+					fs.readFile("clozeLog.json","utf8",function(error,data){
+						if (error){
+							return console.log(error);
+						}
+						console.log("\nAnswer: "+ parseInt(clozeCardIdx+1)+".  "+JSON.parse(data)[clozeCardIdx].fullText);
+						clozeCardIdx++;
+						runClozeCards();
+					});
+				}
 			});
 		}
 	});
@@ -170,3 +175,4 @@ function complete() {
 	console.log("You are done!");
 	return;
 }
+return;
