@@ -31,19 +31,7 @@ function newCard(){
 			.then(function(answer){
 				var card=new BasicCard(answer.front, answer.back);
 				flashcards.push(card);
-				// fs.appendFile("cards.js",flashcards,function(err){
-				// 	if (err){
-				// 		console.log(err);
-				// 	}
-				// });
 				console.log(flashcards);
-				// fs.readFile("cards.js","utf8",function(error,data){
-				// 	if (error){
-				// 		console.log(error);
-				// 	}
-				// 	console.log(data);
-				// 	console.log(data[0]);
-				// })
 				newCard();
 			});
 		}
@@ -55,26 +43,25 @@ function newCard(){
 
 newCard();
 
+var currentCardIdx = 0;
 function runCards(){
-	for (var i=0; i<flashcards.length;i++){
-		console.log(flashcards[0].front);
-		inquirer.prompt([
-			{
-				type: "confirm",
-				name: "showback",
-				message: "Show answer?"
-			}
-		])
-		.then(function(answer){
-			if (answer.showback){
-				console.log(flashcards)
-			}
-		})
+	if(currentCardIdx > flashcards.length - 1) {
+		console.log("You are done!");
+		return;
 	}
-	
-	// var parseFlashcards=JSON.parse(flashcards);
-	// console.log(parseFlashcards);
-	// for (var i=0; i<flashcards.length; i++){
-	// 	var parseFlashcard=JSON.parse(flashcards[i])
-	// }
+	console.log(flashcards[currentCardIdx].front);
+	inquirer.prompt([
+		{
+			type: "confirm",
+			name: "showAnswer",
+			message: "Show answer?"
+		}
+	])
+	.then(function(answer){
+		if (answer.showAnswer){
+			console.log(flashcards[currentCardIdx].back);
+			currentCardIdx++;
+			runCards();
+		}
+	});
 }
